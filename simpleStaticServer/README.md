@@ -1,0 +1,1 @@
+this is a simple static server implemented by nodejs and express;
