@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+</head>
+
+<body>
+    <input type="file" id="file">
+    <div class="box">
+       <!--  <canvas id="myCanvas" width="200" height="100" style="border:1px solid #c3c3c3;">
+           Your browser does not support the canvas element.
+       </canvas> -->
+    </div>
+    <script>
+    var file = document.getElementById('file');
+    file.addEventListener('change', function(event) {
+        var url = getObjectURL(file.files[0]);
+        // var img = document.createElement('image');
+        var img = new Image();
+        img.src = url;
+        // 必须在图片加载完之后才进行绘制,否则会出现canvas中不出现图片的情况
+        img.onload=function(){
+            var canvas = document.createElement('canvas');
+            // var canvas = document.getElementById('myCanvas');
+            canvas.width = "375";
+            canvas.height = "667";
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            document.getElementsByClassName('box')[0].appendChild(canvas);
+            console.log(canvas.toDataURL());
+            // document.getElementsByClassName('box')[0].appendChild(img);
+        }
+    })
+
+    function getObjectURL(file) {
+        var url = null;
+        if (window.createObjectURL != undefined) { // basic
+            url = window.createObjectURL(file);
+        } else if (window.URL != undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+    }
+    </script>
+</body>
+
+</html>
