@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>client</title>
+</head>
+<body>
+	<div class="container">
+		<form id="form">
+			<input type="text" id="text">
+			<button id="btn">send</button>
+		</form>
+	</div>
+
+	<script>
+		var ws = new WebSocket("ws://localhost:8181");
+		ws.onopne = function (e){
+			console.log("Connection to Server opened");
+			setTimeout(function (){
+				sendMessage("client sent");
+			},3000)
+			function sendMessage(msg){
+				ws.send(msg);
+			}
+			var form = document.getElementById("form"),
+					text = document.getElementById("text"),
+					btn = document.getElementById("btn");
+			btn.addEventListener("click",function (event){
+				console.log(text.html);
+				sendMessage(text.html)
+			},false)
+		}
+	</script>
+</body>
+</html>
