@@ -103,3 +103,52 @@ EventUtil.addHandler(document,'readystatechange',function (){
     console.log('hi');
   }
 })
+
+
+// Function.prototype.bind()
+if (!Function.prototype.bind) {
+  Function.prototype.bind = function (oThis){
+    if(typeof oThis != 'function') throw new Error("wrong");
+    var fToBound = this;
+    var aArgs = Array.prototype.slice.call(arguments, 1);
+    var fNOP = function (){};
+    var fBound = function(){
+      fToBound.apply(this instanceof fNOP? this: oThis, aArgs.cancat(Array.prototype.slice.call(arguments)));
+    }
+
+    if (this.prototype) {
+      fNOP.prototype = this.prototype;
+    }
+    fBound.prototype = new fBound();
+
+    return fBound;
+  }
+}
+
+
+// 将url拆成字典对象
+function getQueryObj(url){
+  url = url == null? window.location.href : url;
+  var search = url.substring(url.lastIndexof("?")+1);
+  var obj = {};
+  var reg = /([^?&=]+)=([^?&=]*)/g;
+  search.replace(reg, function (match, $1, $2){
+    var key = encodeURIComponent($1);
+    var value = encodeURIComponent($2);
+    value = String(value);
+    obj[key] = value;
+    return match;
+  })
+  return obj;
+}
+
+// 实现链式调用
+
+function A(selector){
+  return new A.fn.init(selector);
+}
+A.fn = A.prototype = {constructor: A};
+A.prototype.init = function (selector){
+  this.elements = [];
+}
+A.prototype.init.prototype = A.prototype;
