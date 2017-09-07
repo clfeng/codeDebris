@@ -152,3 +152,43 @@ A.prototype.init = function (selector){
   this.elements = [];
 }
 A.prototype.init.prototype = A.prototype;
+
+
+// 动态添加script代码
+function loadScriptString(code){
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  try{
+    script.appendChild(document.createTextNode(code));
+  }catch(e){
+      //IE
+      script.text = code
+    }
+    document.appendChild(script);
+  }
+// 动态添加css代码
+function loadStylesString(css){
+  var style = document.createElement('style');
+  style.type = 'text/css';
+  try{
+    //在IE中会报错,IE将<style>视为一个特殊的,与<script>类似的节点,不允许访问其子节点
+    style.appendChild(document.createTextNode(css))
+  }catch(e){
+   //IE 
+   style.styleSheet.cssText(css);
+ }
+ var head= document.getElementsByTagName('head')[0];
+ head.appendChild(style);
+}
+
+// 获取和设置元素中的文本
+function getInnerText(element){
+  return (typeof element.textContent == "string")? element.textContent: element.innerText;
+}
+function setInnerText(element, text){
+  if (typeof element.textConentent == 'string') {
+    element.textContent = text;
+  }else{
+    element.innerText = text;
+  }
+}

@@ -10,7 +10,10 @@ A.fn = A.prototype = {
 		if(typeof str == "string"){
 			// 字符串选择器
 			if (document.querySelector) {
-				this.elements = document.querySelector(str);
+				var nodes = document.querySelectorAll(str);
+				for(var i = 0, len = nodes.length; i < len; i++){
+					this.elements.push(nodes[i]);
+				}
 				return;
 			}
 			var selectors = str.split(" ");
