@@ -513,3 +513,77 @@ EventUtil.addHandler(droptarget, "dragover", handleEvent);
 EventUtil.addHandler(droptarget, "drop", handleEvent);
  
  
+function createXHR(){
+  if (typeof XMLHttpRequest !== "undefined") {
+     return new XMLHttpRequest();
+  }else if(typeof ActiveXObject != "undefined"){
+     if (typeof arguments.callee.activeXString != "string") {
+       var version = ["MSXML2.XMLHttp.6.0","MSXML2.XMLHttp.3.0","MSXML2.XMLHttp"], i, len;
+       for(i = 0, len = version.length; i<len; i++){
+          try{
+            new ActiveXObject(version[i]);
+            arguments.callee.activeXString = version[i];
+            break;
+          }catch(e){
+            // 跳过
+          }
+       }
+     }
+     return new ActiveXObject(arguments.callee.activeXString);
+  }else{
+     throw new Error("No XHR object available");
+  }
+}
+ 
+ 
+var xhr = createXHR();
+xhr.onreadystatechange = function (){
+  if (xhr.readyState == 4) {
+     if (xhr.status >= 200 && xhr.status <300 || xhr.status == 304) {
+       console.log(xhr.responseText)
+     }else{
+       console.log("Request was unsuccessful:"+xhr.status);
+     }
+  }
+}
+// 可以用DOM2的onload方法
+xhr.onload = function (){
+  if (xhr.status >= 200 && xhr.status <300 || xhr.status == 304) {
+       console.log(xhr.responseText)
+     }else{
+       console.log("Request was unsuccessful:"+xhr.status);
+     }
+}
+// DOM2的FormData
+var data  = new FormData();
+// var data = new FormData(formObject);
+// data.append(key,value)
+data.append("name","clfeng")
+ 
+//预备一个请求
+xhr.open("get","/login",true);
+xhr.setHeader({"Accept":"text/plain"});
+xhr.send(null);
+
+// ajax跨域
+function createCORSRequest(method, url){
+  var xhr = new XMLHttpRequest();
+  if ("withCredentials" in xhr) {
+     xhr.open(method, url, true);
+  }else if(typeof XDomainRequest != "undefined"){
+     xhr = new XDomainRequest();
+     xhr.open(method, url);
+  }else{
+     xhr = null;
+  }
+  return xhr;
+}
+ 
+ 
+var request = createCORSRequest("get","http://www.somewhere-else.com/page");
+if (request) {
+  request.onload = function (){
+     // 对request.responseText进行处理
+  };
+  request.send();
+}
