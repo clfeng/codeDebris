@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>demo</title>
+	<style>
+	img{
+		width: 600px;
+	}
+	.demo {
+		margin-top:50px;
+	    margin-left: -webkit-calc(100vw - 100%);
+		margin-left: calc(100vw - 100%);
+		text-align: center;
+		overflow: hidden;
+		animation: scrollbar-toggle 2s infinite alternate;
+	}
+	.test{
+		width: 80%;
+		height: 100px;
+		margin-top: 20px;
+		background-color: red;
+	}
+	.test2{
+		width: 100%;
+		height: 100px;
+		margin-top: 20px;
+		background-color: green;
+	}
+	@keyframes scrollbar-toggle {
+		from { height: 0vh; }
+		to { height: 280vh; }
+	}
+</style>
+</head>
+<body>
+	<!-- “视区”所指为浏览器内部的可视区域大小，即window.innerWidth/window.innerHeight大小，不包含任务栏标题栏以及底部工具栏的浏览器区域大小。 -->
+
+	<!-- 100vw相对于浏览器的window.innerWidth，是浏览器的内部宽度，注意，滚动条宽度也计算在内！
+		而100%是可用宽度，是不含滚动条的宽度。 -->
+	<div class="demo">
+		<!-- 对img有用而对其他的没用因为img的对其是因为text-align属性 -->
+		<img src="./banner.png" alt="">
+		<p>hello world</p>
+		<div class="test"></div>
+		<div class="test2"></div>
+	</div>
+</body>
+</html>

@@ -1,17 +1,9 @@
 var pubsub = {};
-(function (myObject){
+(function (pubsub){
+	// 静态私有变量
 	var topics = {};
 	var subUid = -1;
-	myObject.publish = function (topic, args){
-		if (!topics[topic]) {
-			return false;
-		}
-		for(var i = 0, len = topics[topic].length; i < len; i++){
-			topics[topic].func(topic, args);
-		}
-		return this;
-	}
-	myObject.subscribe = function (topic, func){
+	pubsub.subscribe = function (topic, func){
 		if (!topics[topic]) {
 			topics[topic] = [];
 		}
@@ -22,17 +14,26 @@ var pubsub = {};
 		});
 		return token;
 	}
-	myObject.unsubscribe = function (token){
+	pubsub.unsubscribe = function (token){
 		for(var m in topics){
-			if(topics[m]){
-				for(var i = 0, len = topcis[m].length; i < len; i++){
-					if (topics[m][i].token == token ) {
-						topcis[m].splice(i, 1);
-						return token;
-					}
+			for(var i = 0, len = topics[m].length; i < len; i++){
+				if(topics[m][i].token === token){
+					 topics[m][i].splice(i, 1);
+					 return;
 				}
+
 			}
+		}
+	}
+
+	pubsub.publish = function (topic){
+		var args = Array.prototype.slice.call(arguments, 1);
+		if (!topics[topic]) return false;
+		for(var i = 0, len = topics[topic].length; i < len; i++){
+			topics[topic][i].apply(this, args);
 		}
 		return this;
 	}
+	return pubsub;
+
 })(pubsub)

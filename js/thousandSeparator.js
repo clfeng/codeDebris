@@ -36,3 +36,7 @@ function sep2(num){
 
 let ret = sep2(" 1023456789.1223");
 console.log(ret);
+
+
+let test = /(\d)(?=(\d{3})+(\.\d+)$)/g.exec("1023456789.1223")
+console.log(test);

@@ -128,7 +128,7 @@ if (!Function.prototype.bind) {
 
 // 将url拆成字典对象
 function getQueryObj(url){
-  url = url == null? window.location.href : url;
+  url = url == null? window.location.href : url;   
   var search = url.substring(url.lastIndexof("?")+1);
   var obj = {};
   var reg = /([^?&=]+)=([^?&=]*)/g;
@@ -512,7 +512,8 @@ EventUtil.addHandler(droptarget, "dragenter", handleEvent);
 EventUtil.addHandler(droptarget, "dragover", handleEvent);
 EventUtil.addHandler(droptarget, "drop", handleEvent);
  
- 
+
+// ajax
 function createXHR(){
   if (typeof XMLHttpRequest !== "undefined") {
      return new XMLHttpRequest();
@@ -586,4 +587,20 @@ if (request) {
      // 对request.responseText进行处理
   };
   request.send();
+}
+
+// 无法获取浏览器窗口本身的大小，但却可以取得页面视口的大小
+var pageWidth = window.innerWidth,
+    pageHeight = window.innerHeight;
+
+if (typeof pageWidth != 'number') {
+  if (document.compatMode != 'CSS1Compat') {
+    // 标准模式
+    pageWidth = document.documentElement.clientWidth;
+    pageHeight = document.documentElement.clientHeight;
+  }else{
+    // 混杂模式
+    pageWidth = document.body.clientWidth;
+    pageHeight = document.body.clientHeight;
+  }
 }
